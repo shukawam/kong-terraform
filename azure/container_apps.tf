@@ -98,5 +98,4 @@ resource "azurerm_container_app" "shukawam-kong-gw" {
       percentage      = 100
     }
   }
-  secret {}
 }

@@ -25,3 +25,14 @@ variable "location" {
   default     = "Japan East"
 }
 
+variable "kong_cluster_cert" {
+  description = "The Konnect certification"
+  type        = string
+  sensitive   = true
+}
+
+variable "kong_cluster_cert_key" {
+  description = "The Konnect private key"
+  type        = string
+  sensitive   = true
+}

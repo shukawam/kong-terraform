@@ -91,11 +91,12 @@ resource "azurerm_container_app" "shukawam-kong-gw" {
   ingress {
     allow_insecure_connections = true
     external_enabled           = true
-    target_port                = "8443"
+    target_port                = "8000"
     transport                  = "auto"
     traffic_weight {
       latest_revision = true
       percentage      = 100
     }
   }
+  secret {}
 }

@@ -93,5 +93,9 @@ resource "azurerm_container_app" "shukawam-kong-gw" {
     external_enabled           = true
     target_port                = "8443"
     transport                  = "auto"
+    traffic_weight {
+      latest_revision = true
+      percentage      = 100
+    }
   }
 }

@@ -1,3 +1,14 @@
+variable "client_id" {
+  description = "The Azure application ID to use for the resources."
+  type        = string
+}
+
+variable "client_secret" {
+  description = "The client secret for the Azure application."
+  type        = string
+  sensitive   = true
+}
+
 variable "tenant_id" {
   description = "The Azure tenant ID to use for the resources."
   type        = string
@@ -13,3 +24,4 @@ variable "location" {
   type        = string
   default     = "Japan East"
 }
+

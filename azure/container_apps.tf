@@ -71,6 +71,14 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         name  = "KONG_ROUTER_FLAVOR"
         value = "expressions"
       }
+      env {
+        name = "KONG_TRACING_INSTRUMENTATIONS"
+        value = "all"
+      }
+      env {
+        name = "KONG_TRACING_SAMPLING_RATE"
+        value = "1.0"
+      }
     }
   }
   # TODO: Use Key Vault to manage secrets

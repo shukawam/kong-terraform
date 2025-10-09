@@ -76,6 +76,29 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
   }
 }
 
+resource "azurerm_key_vault_secret" "kong_cluster_control_plane" {
+  key_vault_id = azurerm_key_vault.shukawam_key_vault.id
+  name         = "kong-cluster-control-plane"
+  value        = var.kong_cluster_control_plane
+}
+
+resource "azurerm_key_vault_secret" "kong_cluster_server_name" {
+  key_vault_id = azurerm_key_vault.shukawam_key_vault.id
+  name         = "kong-cluster-server-name"
+  value        = var.kong_cluster_server_name
+}
+
+resource "azurerm_key_vault_secret" "kong_cluster_telemetry_endpoint" {
+  key_vault_id = azurerm_key_vault.shukawam_key_vault.id
+  name         = "kong-cluster-telemetry-endpoint"
+  value        = var.kong_cluster_telemetry_endpoint
+}
+
+resource "azurerm_key_vault_secret" "kong_cluster_telemetry_server_name" {
+  key_vault_id = azurerm_key_vault.shukawam_key_vault.id
+  name         = "kong-cluster-telemetry-server-name"
+  value        = var.kong_cluster_telemetry_server_name
+}
 resource "azurerm_key_vault_secret" "kong_cluster_cert" {
   key_vault_id = azurerm_key_vault.shukawam_key_vault.id
   name         = "kong-cluster-cert"

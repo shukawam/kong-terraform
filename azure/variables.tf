@@ -25,6 +25,25 @@ variable "location" {
   default     = "Japan East"
 }
 
+variable "kong_cluster_control_plane" {
+  description = "The Konnect control plane"
+  type        = string
+}
+
+variable "kong_cluster_server_name" {
+  description = "The Konnect server name"
+  type        = string
+}
+
+variable "kong_cluster_telemetry_endpoint" {
+  description = "The Konnect telemetry endpoint"
+  type        = string
+}
+
+variable "kong_cluster_telemetry_server_name" {
+  description = "The Konnect telemetry server name"
+  type        = string
+}
 variable "kong_cluster_cert" {
   description = "The Konnect certification"
   type        = string

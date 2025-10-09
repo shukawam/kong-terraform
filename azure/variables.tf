@@ -19,6 +19,11 @@ variable "subscription_id" {
   type        = string
 }
 
+variable "user_id" {
+  description = "The Azure user ID to use for the resources."
+  type        = string
+}
+
 variable "location" {
   description = "The Azure region where the resources will be created."
   type        = string

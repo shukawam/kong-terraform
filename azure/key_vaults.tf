@@ -6,7 +6,7 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
   tenant_id           = var.tenant_id
   access_policy {
     tenant_id      = data.azurerm_client_config.current.tenant_id
-    object_id      = data.azurerm_user.console_user.object_id
+    object_id      = var.user_id
     application_id = data.azurerm_client_config.current.object_id
     certificate_permissions = [
       "Backup",

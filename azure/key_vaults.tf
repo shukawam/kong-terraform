@@ -7,14 +7,15 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = data.azurerm_client_config.current.object_id
-    key_permissions = [
-      "Get",
-    ]
     secret_permissions = [
+      "Backup",
+      "Delete",
       "Get",
-    ]
-    storage_permissions = [
-      "Get",
+      "List",
+      "Purge",
+      "Recover",
+      "Restore",
+      "Set"
     ]
   }
 }

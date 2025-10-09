@@ -61,16 +61,16 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
     storage_permissions = [
       "Backup",
       "Delete",
-      "DeleteSas",
+      "DeleteSAS",
       "Get",
       "List",
-      "ListSas",
+      "ListSAS",
       "Purge",
       "Recover",
       "RegenerateKey",
       "Restore",
       "Set",
-      "SetSas",
+      "SetSAS",
       "Update"
     ]
   }

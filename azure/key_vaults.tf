@@ -7,46 +7,6 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
   access_policy {
     tenant_id      = data.azurerm_client_config.current.tenant_id
     object_id      = data.azurerm_client_config.current.object_id
-    certificate_permissions = [
-      "Backup",
-      "Create",
-      "Delete",
-      "DeleteIssuers",
-      "Get",
-      "GetIssuers",
-      "Import",
-      "List",
-      "ListIssuers",
-      "ManageContacts",
-      "ManageIssuers",
-      "Purge",
-      "Recover",
-      "Restore",
-      "SetIssuers",
-      "Update"
-    ]
-    key_permissions = [
-      "Backup",
-      "Create",
-      "Decrypt",
-      "Delete",
-      "Encrypt",
-      "Get",
-      "Import",
-      "List",
-      "Purge",
-      "Recover",
-      "Restore",
-      "Sign",
-      "UnwrapKey",
-      "Update",
-      "Verify",
-      "WrapKey",
-      "Release",
-      "Rotate",
-      "GetRotationPolicy",
-      "SetRotationPolicy"
-    ]
     secret_permissions = [
       "Backup",
       "Delete",
@@ -56,21 +16,6 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
       "Recover",
       "Restore",
       "Set"
-    ]
-    storage_permissions = [
-      "Backup",
-      "Delete",
-      "DeleteSAS",
-      "Get",
-      "List",
-      "ListSAS",
-      "Purge",
-      "Recover",
-      "RegenerateKey",
-      "Restore",
-      "Set",
-      "SetSAS",
-      "Update"
     ]
   }
 }

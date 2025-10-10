@@ -1,7 +1,8 @@
 resource "azurerm_container_app_environment" "shukawam_container_app_environment" {
-  name                = "shukawam-container-app-environment"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.shukawam_resource_group.name
+  name                       = "shukawam-container-app-environment"
+  location                   = var.location
+  resource_group_name        = azurerm_resource_group.shukawam_resource_group.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
 }
 
 resource "azurerm_container_app" "shukawam-kong-gateway" {
@@ -10,6 +11,10 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
   resource_group_name          = azurerm_resource_group.shukawam_resource_group.name
   revision_mode                = "Single"
   template {
+    scale {
+      min_replicas = 1
+      max_replicas = 3
+    }
     container {
       name   = "kong-gateway"
       image  = "kong/kong-gateway:3.12"
@@ -72,15 +77,16 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         value = "expressions"
       }
       env {
-        name = "KONG_TRACING_INSTRUMENTATIONS"
+        name  = "KONG_TRACING_INSTRUMENTATIONS"
         value = "all"
       }
       env {
-        name = "KONG_TRACING_SAMPLING_RATE"
+        name  = "KONG_TRACING_SAMPLING_RATE"
         value = "1.0"
       }
     }
   }
+
   # TODO: Use Key Vault to manage secrets
   # secret {
   #   name                = "konnect-cluster-control-plane"

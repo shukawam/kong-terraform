@@ -14,8 +14,8 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
     init_container {
       name   = "load-otel-collector-config"
       image  = "busybox:latest"
-      cpu    = "0.1"
-      memory = "0.1Gi"
+      cpu    = "0.25"
+      memory = "0.5Gi"
       command = [
         "wget",
         "https://raw.githubusercontent.com/shukawam/kong-terraform/refs/heads/main/azure/config/otel-collector-config.yaml",
@@ -104,7 +104,7 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       memory = "1Gi"
       env {
         name  = "CONNECTION_STRING"
-        value = azurerm_application_insights.shukawam_application_insights.instrumentation_key
+        value = azurerm_application_insights.shukawam_application_insights.cobbection_string
       }
       volume_mounts {
         name = "otel-config"

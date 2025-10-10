@@ -11,6 +11,24 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
   resource_group_name          = azurerm_resource_group.shukawam_resource_group.name
   revision_mode                = "Single"
   template {
+    init_container {
+      name   = "load-otel-collector-config"
+      image  = "busybox:latest"
+      cpu    = "0.1"
+      memory = "0.1Gi"
+      command = [
+        "sh",
+        "-c",
+        "curl",
+        "https://raw.githubusercontent.com/shukawam/kong-terraform/refs/heads/main/azure/config/otel-collector-config.yaml",
+        "-o",
+        "/tmp/config.yaml"
+      ]
+      volume_mounts {
+        name = "otel-config"
+        path = "/tmp"
+      }
+    }
     container {
       name   = "kong-gateway"
       image  = "kong/kong-gateway:3.12"
@@ -81,9 +99,27 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         value = "1.0"
       }
     }
+    container {
+      name   = "otel-collector"
+      image  = "otel/opentelemetry-collector-contrib:0.137.0"
+      cpu    = "0.5"
+      memory = "1Gi"
+      env {
+        name  = "CONNECTION_STRING"
+        value = azurerm_application_insights.shukawam_application_insights.instrumentation_key
+      }
+      volume_mounts {
+        name = "otel-config"
+        path = "/etc/otelcol-contrib"
+      }
+    }
     # Always keep 1 replica to avoid cold start
     min_replicas = 1
     max_replicas = 1
+    volume {
+      name         = "otel-config"
+      storage_type = "EmptyDir"
+    }
   }
 
   # TODO: Use Key Vault to manage secrets

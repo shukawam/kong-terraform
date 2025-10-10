@@ -11,10 +11,6 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
   resource_group_name          = azurerm_resource_group.shukawam_resource_group.name
   revision_mode                = "Single"
   template {
-    scale {
-      min_replicas = 1
-      max_replicas = 3
-    }
     container {
       name   = "kong-gateway"
       image  = "kong/kong-gateway:3.12"
@@ -85,6 +81,9 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         value = "1.0"
       }
     }
+    # Always keep 1 replica to avoid cold start
+    min_replicas = 1
+    max_replicas = 1
   }
 
   # TODO: Use Key Vault to manage secrets

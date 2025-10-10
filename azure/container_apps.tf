@@ -96,6 +96,10 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         name  = "KONG_TRACING_SAMPLING_RATE"
         value = "1.0"
       }
+      env {
+        name  = "KONG_STATUS_LISTEN"
+        value = "0.0.0.0:8100"
+      }
     }
     container {
       name   = "otel-collector"

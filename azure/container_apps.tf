@@ -104,7 +104,7 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       memory = "1Gi"
       env {
         name  = "CONNECTION_STRING"
-        value = azurerm_application_insights.shukawam_application_insights.cobbection_string
+        value = azurerm_application_insights.shukawam_application_insights.connection_string
       }
       volume_mounts {
         name = "otel-config"

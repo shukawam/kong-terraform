@@ -17,11 +17,9 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       cpu    = "0.1"
       memory = "0.1Gi"
       command = [
-        "sh",
-        "-c",
-        "curl",
+        "wget",
         "https://raw.githubusercontent.com/shukawam/kong-terraform/refs/heads/main/azure/config/otel-collector-config.yaml",
-        "-o",
+        "-O",
         "/tmp/config.yaml"
       ]
       volume_mounts {

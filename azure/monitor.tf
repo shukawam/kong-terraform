@@ -30,9 +30,9 @@
 #   retention_in_days = 30
 # } 
 
-# resource "azurerm_application_insights" "shukawam_application_insights" {
-#   name                = "shukawam-application-insights"
-#   location            = var.location
-#   resource_group_name = azurerm_resource_group.shukawam_resource_group.name
-#   application_type    = "web"
-# }
+resource "azurerm_application_insights" "shukawam_application_insights" {
+  name                = "shukawam-application-insights"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.shukawam_resource_group.name
+  application_type    = "web"
+}

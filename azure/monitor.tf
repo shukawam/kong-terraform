@@ -4,6 +4,25 @@ resource "azurerm_monitor_workspace" "shukawam_azure_monitor_workspace" {
   resource_group_name = azurerm_resource_group.shukawam_resource_group.name
 }
 
+resource "azurerm_monitor_aad_diagnostic_setting" "shukawam_aad_diagnostic_setting" {
+  name                       = "shukawam-aad-diagnostic-setting"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
+  enabled_log {
+    category = "ContainerAppConsoleLogs"
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+  enabled_log {
+    category = "ContainerAppSystemLogs"
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+}
+
 resource "azurerm_log_analytics_workspace" "shukawam_log_analytics_workspace" {
   name     = "shukawam-log-analytics-workspace"
   location = var.location

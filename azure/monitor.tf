@@ -28,10 +28,6 @@ resource "azurerm_monitor_diagnostic_setting" "shukawam_container_app_env_diagno
   enabled_log {
     category = "ContainerAppSystemLogs"
   }
-  metric {
-    category = "AllMetrics"
-    enabled  = true
-  }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "shukawam_container_app_diagnostic_setting" {

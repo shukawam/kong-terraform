@@ -32,6 +32,7 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       image  = "otel/opentelemetry-collector-contrib:0.137.0"
       cpu    = "0.25"
       memory = "0.5Gi"
+      args = ["--config=/etc/otelcol-contrib/config.yaml"]
       env {
         name  = "CONNECTION_STRING"
         value = azurerm_application_insights.shukawam_application_insights.connection_string

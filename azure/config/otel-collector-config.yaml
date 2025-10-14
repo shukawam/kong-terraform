@@ -27,13 +27,18 @@ exporters:
 service:
   pipelines:
     traces:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [azuremonitor]
+      receivers:
+        - otlp
+      processors:
+        - batch
+      exporters:
+        - azuremonitor
     metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [azuremonitor, debug]
+      receivers: 
+        - otlp
+      exporters:
+        - azuremonitor
+        - debug
     # logs:
     #   receivers: [otlp]
     #   processors: [batch]

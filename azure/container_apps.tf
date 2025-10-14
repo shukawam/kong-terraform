@@ -2,6 +2,7 @@ resource "azurerm_container_app_environment" "shukawam_container_app_environment
   name                       = "shukawam-container-app-environment"
   location                   = var.location
   resource_group_name        = azurerm_resource_group.shukawam_resource_group.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
 }
 
 resource "azurerm_container_app" "shukawam-kong-gateway" {
@@ -24,6 +25,20 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       volume_mounts {
         name = "otel-config"
         path = "/tmp"
+      }
+    }
+    container {
+      name   = "opentelemetry-collector"
+      image  = "otel/opentelemetry-collector-contrib:0.137.0"
+      cpu    = "0.25"
+      memory = "0.5Gi"
+      env {
+        name  = "CONNECTION_STRING"
+        value = azurerm_application_insights.shukawam_application_insights.connection_string
+      }
+      volume_mounts {
+        name = "otel-config"
+        path = "/etc/otelcol-contrib"
       }
     }
     container {
@@ -100,20 +115,7 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         value = "0.0.0.0:8100"
       }
     }
-    container {
-      name   = "opentelemetry-collector"
-      image  = "otel/opentelemetry-collector-contrib:0.137.0"
-      cpu    = "0.25"
-      memory = "0.5Gi"
-      env {
-        name  = "CONNECTION_STRING"
-        value = azurerm_application_insights.shukawam_application_insights.connection_string
-      }
-      volume_mounts {
-        name = "otel-config"
-        path = "/etc/otelcol-contrib"
-      }
-    }
+    
     # Always keep 1 replica to avoid cold start
     min_replicas = 1
     max_replicas = 1

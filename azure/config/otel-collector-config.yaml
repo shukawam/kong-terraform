@@ -41,4 +41,3 @@ service:
         - batch
       exporters:
         - azuremonitor
-        - debug

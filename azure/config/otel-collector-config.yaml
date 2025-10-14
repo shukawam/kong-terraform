@@ -11,7 +11,8 @@ receivers:
         - job_name: kong-dp
           scrape_interval: 10s
           static_configs:
-            - targets: ["localhost:8100"]
+            - targets:
+                - localhost:8100
 
 processors:
   batch:
@@ -34,12 +35,8 @@ service:
       exporters:
         - azuremonitor
     metrics:
-      receivers: 
+      receivers:
         - otlp
       exporters:
         - azuremonitor
         - debug
-    # logs:
-    #   receivers: [otlp]
-    #   processors: [batch]
-    #   exporters: [azuremonitor]

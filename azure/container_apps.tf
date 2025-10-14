@@ -105,8 +105,8 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
     container {
       name   = "otel-collector"
       image  = "otel/opentelemetry-collector-contrib:0.137.0"
-      cpu    = "0.5"
-      memory = "1Gi"
+      cpu    = "0.25"
+      memory = "0.5Gi"
       env {
         name  = "CONNECTION_STRING"
         value = azurerm_application_insights.shukawam_application_insights.connection_string
@@ -125,31 +125,6 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
     }
   }
 
-  # TODO: Use Key Vault to manage secrets
-  # secret {
-  #   name                = "konnect-cluster-control-plane"
-  #   key_vault_secret_id = azurerm_key_vault_secret.kong_cluster_control_plane.id
-  # }
-  # secret {
-  #   name                = "konnect-cluster-server-name"
-  #   key_vault_secret_id = azurerm_key_vault_secret.kong_cluster_server_name.id
-  # }
-  # secret {
-  #   name                = "konnect-cluster-telemetry-endpoint"
-  #   key_vault_secret_id = azurerm_key_vault_secret.kong_cluster_telemetry_endpoint.id
-  # }
-  # secret {
-  #   name                = "konnect-cluster-telemetry-server-name"
-  #   key_vault_secret_id = azurerm_key_vault_secret.kong_cluster_telemetry_server_name.id
-  # }
-  # secret {
-  #   name                = "konnect-cluster-cert"
-  #   key_vault_secret_id = azurerm_key_vault_secret.konnect_cluster_cert.id
-  # }
-  # secret {
-  #   name                = "konnect-cluster-cert-key"
-  #   key_vault_secret_id = azurerm_key_vault_secret.konnect_cluster_cert_key.id
-  # }
   ingress {
     allow_insecure_connections = true
     external_enabled           = true

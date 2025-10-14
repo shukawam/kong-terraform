@@ -2,6 +2,7 @@ resource "azurerm_container_app_environment" "shukawam_container_app_environment
   name                       = "shukawam-container-app-environment"
   location                   = var.location
   resource_group_name        = azurerm_resource_group.shukawam_resource_group.name
+  logs_destination           = "log-analytics"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
 }
 

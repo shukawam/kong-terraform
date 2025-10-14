@@ -18,7 +18,7 @@ resource "azurerm_application_insights" "shukawam_application_insights" {
 }
 
 # Monitor Diagnostic Setting for Container App to Log Analytics
-resource "azurerm_monitor_diagnostic_setting" "shukawam_container_app_diagnostic_setting" {
+resource "azurerm_monitor_diagnostic_setting" "shukawam_container_app_env_diagnostic_setting" {
   name                       = "shukawam-kong-gateway-logs"
   target_resource_id         = azurerm_container_app_environment.shukawam_container_app_environment.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
@@ -28,6 +28,16 @@ resource "azurerm_monitor_diagnostic_setting" "shukawam_container_app_diagnostic
   enabled_log {
     category = "ContainerAppSystemLogs"
   }
+  metric {
+    category = "AllMetrics"
+    enabled  = true
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "shukawam_container_app_diagnostic_setting" {
+  name                       = "shukawam-kong-gateway-logs"
+  target_resource_id         = azurerm_container_app.shukawam-kong-gateway.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
   metric {
     category = "AllMetrics"
     enabled  = true

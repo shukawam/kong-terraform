@@ -101,7 +101,7 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       }
     }
     container {
-      name   = "otel-collector"
+      name   = "opentelemetry-collector"
       image  = "otel/opentelemetry-collector-contrib:0.137.0"
       cpu    = "0.25"
       memory = "0.5Gi"

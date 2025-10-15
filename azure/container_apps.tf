@@ -2,7 +2,7 @@ resource "azurerm_container_app_environment" "shukawam_container_app_environment
   name                       = "shukawam-container-app-environment"
   location                   = var.location
   resource_group_name        = azurerm_resource_group.shukawam_resource_group.name
-  logs_destination            = "log-analytics"
+  logs_destination           = "log-analytics"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
 }
 
@@ -136,5 +136,23 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       latest_revision = true
       percentage      = 100
     }
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "shukawam_kong_gateway_logs" {
+  name                       = "shukawam-kong-gateway-diagnostic"
+  target_resource_id         = azurerm_container_app.shukawam-kong-gateway.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
+
+  enabled_log {
+    category = "ContainerAppConsoleLogs"
+  }
+
+  enabled_log {
+    category = "SystemLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
   }
 }

@@ -141,17 +141,14 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
 
 resource "azurerm_monitor_diagnostic_setting" "shukawam_kong_gateway_logs" {
   name                       = "shukawam-kong-gateway-diagnostic"
-  target_resource_id         = azurerm_container_app.shukawam-kong-gateway.id
+  target_resource_id         = azurerm_container_app_environment.shukawam_container_app_environment.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
-
   enabled_log {
     category = "ContainerAppConsoleLogs"
   }
-
   enabled_log {
-    category = "SystemLogs"
+    category = "ContainerAppSystemLogs"
   }
-
   enabled_metric {
     category = "AllMetrics"
   }

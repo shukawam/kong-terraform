@@ -35,8 +35,8 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       memory = "0.5Gi"
       args   = ["--config=/etc/otelcol-contrib/config.yaml"]
       env {
-        name  = "CONNECTION_STRING"
-        value = azurerm_application_insights.shukawam_application_insights.connection_string
+        name        = "CONNECTION_STRING"
+        secret_name = "connection-string"
       }
       volume_mounts {
         name = "otel-config"
@@ -65,28 +65,32 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         value = "pki"
       }
       env {
-        name  = "KONG_CLUSTER_CONTROL_PLANE"
-        value = var.kong_cluster_control_plane
+        name        = "KONG_CLUSTER_CONTROL_PLANE"
+        secret_name = "kong-cluster-control-plane"
       }
       env {
-        name  = "KONG_CLUSTER_SERVER_NAME"
-        value = var.kong_cluster_server_name
+        name        = "KONG_CLUSTER_SERVER_NAME"
+        secret_name = "kong-cluster-server-name"
       }
       env {
-        name  = "KONG_CLUSTER_TELEMETRY_ENDPOINT"
-        value = var.kong_cluster_telemetry_endpoint
+        name        = "KONG_CLUSTER_TELEMETRY_ENDPOINT"
+        secret_name = "kong-cluster-telemetry-endpoint"
       }
       env {
-        name  = "KONG_CLUSTER_TELEMETRY_SERVER_NAME"
-        value = var.kong_cluster_telemetry_server_name
+        name        = "KONG_CLUSTER_TELEMETRY_SERVER_NAME"
+        secret_name = "kong-cluster-telemetry-server-name"
       }
       env {
-        name  = "KONG_CLUSTER_CERT"
-        value = var.kong_cluster_cert
+        name        = "KONG_CLUSTER_CERT"
+        secret_name = "kong-cluster-cert"
       }
       env {
-        name  = "KONG_CLUSTER_CERT_KEY"
-        value = var.kong_cluster_cert_key
+        name        = "KONG_CLUSTER_CERT_KEY"
+        secret_name = "kong-cluster-cert-key"
+      }
+      env {
+        name        = "KONG_CLUSTER_CA_CERT"
+        secret_name = "kong-cluster-ca-cert"
       }
       env {
         name  = "KONG_LUA_SSL_TRUSTED_CERTIFICATE"
@@ -126,7 +130,6 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       storage_type = "EmptyDir"
     }
   }
-
   ingress {
     allow_insecure_connections = true
     external_enabled           = true
@@ -136,6 +139,41 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
       latest_revision = true
       percentage      = 100
     }
+  }
+  secret {
+    name                = "connection-string"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/connection-string/37617b9cee4242aebfe90a7f62a3276c"
+  }
+  secret {
+    name                = "kong-cluster-control-plane"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-control-plane/447bad6f8a4c4ebea66ca2285ae36c4f"
+  }
+  secret {
+    name                = "kong-cluster-server-name"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-server-name/179b083a15c84c5a8adafab8fb0403ba"
+  }
+  secret {
+    name                = "kong-cluster-telemetry-endpoint"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-telemetry-endpoint/6630603a7b004171a7f5cb97762dc17e"
+  }
+  secret {
+    name                = "kong-cluster-telemetry-server-name"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-telemetry-server-name/978900708d42446382485d24e5753192"
+  }
+  secret {
+    name                = "kong-cluster-cert"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-cert/1f9ce65285a948c0af7ed05c9d15f1c0"
+  }
+  secret {
+    name                = "kong-cluster-cert-key"
+    identity            = var.user_id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-cert-key/25e83e742b3842709aaee1e46e6ce678"
   }
 }
 

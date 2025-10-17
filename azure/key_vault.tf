@@ -7,6 +7,7 @@ resource "azurerm_key_vault" "shukawam_key_vault" {
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
   sku_name                    = "standard"
+  enable_rbac_authorization   = false
   access_policy {
     tenant_id = var.tenant_id
     object_id = var.user_id

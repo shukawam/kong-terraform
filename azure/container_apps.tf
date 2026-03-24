@@ -12,11 +12,27 @@ resource "azurerm_user_assigned_identity" "shukawam_identity" {
   resource_group_name = azurerm_resource_group.shukawam_resource_group.name
 }
 
+data "azurerm_key_vault" "shukawam_kv" {
+  name                = "shukawam-kv"
+  resource_group_name = azurerm_resource_group.shukawam_resource_group.name
+}
+
+resource "azurerm_key_vault_access_policy" "container_app_identity" {
+  key_vault_id = data.azurerm_key_vault.shukawam_kv.id
+  tenant_id    = var.tenant_id
+  object_id    = azurerm_user_assigned_identity.shukawam_identity.principal_id
+
+  secret_permissions = [
+    "Get",
+  ]
+}
+
 resource "azurerm_container_app" "shukawam-kong-gateway" {
   name                         = "shukawam-kong-gateway"
   container_app_environment_id = azurerm_container_app_environment.shukawam_container_app_environment.id
   resource_group_name          = azurerm_resource_group.shukawam_resource_group.name
   revision_mode                = "Single"
+  depends_on                   = [azurerm_key_vault_access_policy.container_app_identity]
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.shukawam_identity.id]

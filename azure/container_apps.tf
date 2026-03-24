@@ -99,10 +99,6 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
         secret_name = "kong-cluster-cert-key"
       }
       env {
-        name        = "KONG_CLUSTER_CA_CERT"
-        secret_name = "kong-cluster-ca-cert"
-      }
-      env {
         name  = "KONG_LUA_SSL_TRUSTED_CERTIFICATE"
         value = "system"
       }

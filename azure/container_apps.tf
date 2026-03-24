@@ -6,11 +6,21 @@ resource "azurerm_container_app_environment" "shukawam_container_app_environment
   log_analytics_workspace_id = azurerm_log_analytics_workspace.shukawam_log_analytics_workspace.id
 }
 
+resource "azurerm_user_assigned_identity" "shukawam_identity" {
+  name                = "shukawam-container-app-identity"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.shukawam_resource_group.name
+}
+
 resource "azurerm_container_app" "shukawam-kong-gateway" {
   name                         = "shukawam-kong-gateway"
   container_app_environment_id = azurerm_container_app_environment.shukawam_container_app_environment.id
   resource_group_name          = azurerm_resource_group.shukawam_resource_group.name
   revision_mode                = "Single"
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.shukawam_identity.id]
+  }
   template {
     init_container {
       name   = "load-otel-collector-config"
@@ -45,7 +55,7 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
     }
     container {
       name   = "kong-gateway"
-      image  = "kong/kong-gateway:3.12"
+      image  = "kong/kong-gateway:3.13"
       cpu    = "0.5"
       memory = "1Gi"
       env {
@@ -142,38 +152,38 @@ resource "azurerm_container_app" "shukawam-kong-gateway" {
   }
   secret {
     name                = "connection-string"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/connection-string/37617b9cee4242aebfe90a7f62a3276c"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/connection-string"
   }
   secret {
     name                = "kong-cluster-control-plane"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-control-plane/447bad6f8a4c4ebea66ca2285ae36c4f"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-control-plane"
   }
   secret {
     name                = "kong-cluster-server-name"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-server-name/179b083a15c84c5a8adafab8fb0403ba"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-server-name"
   }
   secret {
     name                = "kong-cluster-telemetry-endpoint"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-telemetry-endpoint/6630603a7b004171a7f5cb97762dc17e"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-telemetry-endpoint"
   }
   secret {
     name                = "kong-cluster-telemetry-server-name"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-telemetry-server-name/978900708d42446382485d24e5753192"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-telemetry-server-name"
   }
   secret {
     name                = "kong-cluster-cert"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-cert/1f9ce65285a948c0af7ed05c9d15f1c0"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-cert"
   }
   secret {
     name                = "kong-cluster-cert-key"
-    identity            = var.user_id
-    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-cert-key/25e83e742b3842709aaee1e46e6ce678"
+    identity            = azurerm_user_assigned_identity.shukawam_identity.id
+    key_vault_secret_id = "https://shukawam-kv.vault.azure.net/secrets/kong-cluster-cert-key"
   }
 }
 

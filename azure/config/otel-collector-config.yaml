@@ -36,7 +36,7 @@ service:
         - azuremonitor
     metrics:
       receivers:
-        - prometheus
+        - otlp
       processors:
         - batch
       exporters:
